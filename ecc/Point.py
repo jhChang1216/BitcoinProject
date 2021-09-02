@@ -26,7 +26,7 @@ class Point:
             return other
         elif other.x is None:
             return self
-        if self.x == other.x and self.y == -(other.y):
+        if self.x == other.x and self.y != other.y:
             return self.__class__(None,None,self.a,self.b)
         if self.x != other.x:
             slope = (self.y - other.y)/(self.x - other.x)
@@ -41,6 +41,13 @@ class Point:
             y3 = slope*(self.x - x3) - self.y
             return self.__class__(x3,y3, self.a, self.b)
 
-
-
-
+    def __rmul__(self, coefficient):
+        coef = coefficient
+        current = self
+        result = self.__class__(None, None, self.a, self.b)
+        while coef:
+            if coef & 1:
+                result += current
+            current += current
+            coef >>= 1
+        return result
